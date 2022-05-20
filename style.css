@@ -12,40 +12,39 @@
 
 .selection-container{
     width: 300px;
+    min-width: 300px;
     background-color: black;
     min-height: 200px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+    display: block;
     padding: .5%;
 }
 
-.view-container{
-    flex-direction: row;
-    width: 600px;
-    height: 800px;
+.view-container img{
+    width: auto;
+    height: auto;
+    max-width: 400px;
     background-color: blue;
 }
-
 .selection-item{
+    margin-top: 5%;
+    background-color: blueviolet;
     border-radius: 5px;
-    padding: 5px;
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
-
+    padding: 0px;
 }
 
-.selection-item-image{
-    width: 40px;
-    height: 40px;
-    background-color: brown;
+.selection-container img {
+    height: 50px;
+    width: 50px;
     border-radius: 5px;
     padding: 1.5%;
+    display: inline;
 }
 
 .selection-item-text{
+    display: inline;
+    margin-left: 10%;
     border-radius: 5px;
     padding: 1.5%;
     font-size: x-large;
+    align-items: center;
 }
