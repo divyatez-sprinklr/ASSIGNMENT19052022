@@ -52,6 +52,13 @@ function setSelected(index, item , link)
     [selectedIndex,selectedItem,selectedItemLink] = [index, item, link];
 }
 
+function toggleSelected(index){
+    document.getElementById(`selectedItem${selectedIndex}`).style.backgroundColor = 'transparent';
+    editImg(index)
+    document.getElementById(`selectedItem${selectedIndex}`).style.backgroundColor = '#0453c8';
+    console.log("Clicked"+index);
+}
+
 function addInitalElements(){
     const selectionItem = document.getElementById("selection-container");
     selectionItem.innerHTML = "";
@@ -67,33 +74,32 @@ function addInitalElements(){
         newItem.classList.add('selection-item');
         newItem.innerHTML = createElementHTML(item.title,item.previewImage);
         newItem.setAttribute("id",`selectedItem${index}`);
-        newItem.onclick = () =>{ 
-            document.getElementById(`selectedItem${selectedIndex}`).style.backgroundColor = 'transparent';
-            editImg(index)
-            selectedItem = newItem;
-            document.getElementById(`selectedItem${selectedIndex}`).style.backgroundColor = '#0453c8';
-            console.log("Clicked"+index);
-        };
-
-        console.log(newItem);
+        newItem.onclick = () => toggleSelected(index);
         selectionItem.appendChild(newItem);
   });
 }
 
-// for(var i=0;i<data.length;i++)
-// {
-//     let backpackArticle = document.createElement("div");
-//     backpackArticle.classList.add("selection-item");
-//     //backpackArticle.setAttribute("id", backpack.id);
-  
-//     backpackArticle.innerHTML = `<div class="selection-item">
-//     <img src="${data[i].previewImage}" alt="" width="50" height="50">
-//     <p class="selection-item-text">${cropTitle(data[i].title)}</p>
-//     </div>`;
-//     mainContainer.append(backpackArticle);
-//     //backpackArticle.addEventListener("click",editImg(i));
-// }
-// console.log(mainContainer);
+document.addEventListener("keydown", function(event) {
+    if(event.keyCode==38){
+        console.log("Up key");
+        if(selectedIndex==0)
+        {
+            toggleSelected(data.length-1);
+        }
+        else
+            toggleSelected(selectedIndex-1);
+    }
+    else if(event.keyCode==40){
+        if(selectedIndex==data.length-1)
+        {
+            toggleSelected(0);
+        }
+        else
+            toggleSelected(selectedIndex+1);
+    }   
+});
+
+
  function handleEditName()
  {
     viewImageName.style.display="block";
