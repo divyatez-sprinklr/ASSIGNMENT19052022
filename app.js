@@ -3,10 +3,10 @@ import data from "./data.js";
 var selectedIndex=0;
 
 const selectedItemImage = document.createElement("img");
-const titleTextField = document.createElement("textarea");
+const selectedItemTitleTextField = document.createElement("textarea");
 const viewContainer = document.querySelector(".view-container");
-const selectedImageDetailsContainer = document.querySelector('.edit-container');
-titleTextField.setAttribute("id","nameField");
+const selectedItemDetailsContainer = document.querySelector('.edit-container');
+selectedItemTitleTextField.setAttribute("id","nameField");
 
 
 
@@ -24,13 +24,13 @@ function handleOverFlow(index){
 
     if(isEllipsisActive(selectionItemTitleContainer))
     {
-        var name = data[index].title;
+        var itemTitle = data[index].title;
         var front="",back="";
-        var len = name.length;
-        for(var i=0;i<len/2;i++)
+        var itemLength = itemTitle.length;
+        for(var i=0;i<itemLength/2;i++)
         {
-            front = front + name[i];
-            back = name[len-i-1] + back;
+            front = front + itemTitle[i];
+            back = itemTitle[itemLength-i-1] + back;
             selectionItemTitleContainer.innerText = front + "1111111" +back;
             if(isEllipsisActive(selectionItemTitleContainer)){
                 selectionItemTitleContainer.innerText = front + "..." +back;
@@ -68,8 +68,8 @@ function createElementHTML(index,title,previewImage)
  */
 function handleViewImage(newIndex){
     selectedItemImage.setAttribute("src", data[newIndex].previewImage);
-    titleTextField.value = data[newIndex].title;
-    titleTextField.style.width = `${data[newIndex].title.length}ch`;
+    selectedItemTitleTextField.value = data[newIndex].title;
+    selectedItemTitleTextField.style.width = `${data[newIndex].title.length}ch`;
     
 }
 
@@ -129,14 +129,14 @@ function createInitialElements(){
         handleOverFlow(i);
 
     //Enable Attributes for titleTextfield
-    titleTextField.style.display="block";
-    titleTextField.setAttribute("type","text");
-    titleTextField.oninput=(event) =>{'this.style.height = "";this.style.height = this.scrollHeight + "px"'};
-    titleTextField.style.overflow = `hidden`;
-    titleTextField.style.resize = `none`;
+    selectedItemTitleTextField.style.display="block";
+    selectedItemTitleTextField.setAttribute("type","text");
+    selectedItemTitleTextField.oninput=(event) =>{'this.style.height = "";this.style.height = this.scrollHeight + "px"'};
+    selectedItemTitleTextField.style.overflow = `hidden`;
+    selectedItemTitleTextField.style.resize = `none`;
 
     //Handle keypress for titleTestfield
-    titleTextField.onkeypress = (event)=> {
+    selectedItemTitleTextField.onkeypress = (event)=> {
         if(event.keyCode==13){onPressEnter();}
         else{handleEditedTitle(selectedIndex);}
     };
@@ -145,9 +145,9 @@ function createInitialElements(){
     viewContainer.prepend(selectedItemImage);
     
     //Append Title
-    selectedImageDetailsContainer.append(titleTextField);
-    selectedImageDetailsContainer.style.borderColor ="transparent";
-    selectedImageDetailsContainer.onclick = ()=> {titleTextField.focus();
+    selectedItemDetailsContainer.append(selectedItemTitleTextField);
+    selectedItemDetailsContainer.style.borderColor ="transparent";
+    selectedItemDetailsContainer.onclick = ()=> {selectedItemTitleTextField.focus();
 
 };
 }
@@ -174,8 +174,8 @@ function handleEditedTitle(index)
      * Update changed title to data.
      * Check overflow condition and update accordingly.
     */
-    document.getElementById(`selectionItemElementID${index}`).innerText = titleTextField.value;
-    data[index].title = titleTextField.value;
+    document.getElementById(`selectionItemElementID${index}`).innerText = selectedItemTitleTextField.value;
+    data[index].title = selectedItemTitleTextField.value;
     handleOverFlow(index);
 }
 
@@ -188,7 +188,7 @@ function onPressEnter(){
     */
     handleEditedTitle(selectedIndex);
     document.activeElement.blur();
-    selectedImageDetailsContainer.style.borderColor ="transparent";
+    selectedItemDetailsContainer.style.borderColor ="transparent";
 }
 
 
@@ -208,9 +208,9 @@ function main(){
     toggleItemSelection(0);
 
 
-    titleTextField.addEventListener('input', handleResizeInput);
-    titleTextField.addEventListener('focus', ()=>{
-        selectedImageDetailsContainer.style.borderColor ="#0453c8";
+    selectedItemTitleTextField.addEventListener('input', handleResizeInput);
+    selectedItemTitleTextField.addEventListener('focus', ()=>{
+        selectedItemDetailsContainer.style.borderColor ="#0453c8";
     }); 
 
     document.getElementById('nameField').addEventListener('input', function(event){

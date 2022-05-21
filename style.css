@@ -20,7 +20,7 @@ body {
 }
 
 .view-container {
-    width: 600px;
+    width: 540px;
     align-items: center;
     display: flex;
     flex-direction: column;
@@ -37,8 +37,8 @@ body {
 }
 
 .view-container img{
-    width: 600px;
-    height: 800px;
+    width: 540px;
+    height: 750px;
     object-fit: cover;
     border-radius: 1%
 }
@@ -48,7 +48,7 @@ body {
     margin-top: 1%;
     background-color: transparent;
     border-radius: 5px;
-    padding: 0px 1px 5px 10px;
+    padding: 2px 8px 8px 8px;
     display: flex;
     flex-direction: row;
     gap: 10px;
@@ -79,7 +79,7 @@ textarea
     column-span: auto;
     border: none;
     height: fit-content;
-    font-size:1.3em; 
+    font-size:1.5em; 
     padding: 0em; 
     max-width: 90%;
     overflow:hidden;
