@@ -9,28 +9,50 @@ const viewContainer = document.querySelector(".view-container");
 const editContainer = document.querySelector('.edit-container');
 editNameInput.setAttribute("id","nameField");
 
-function cropTitle(name){
-    if(name.length>30)
+
+
+function isEllipsisActive(e) {
+    return (e.offsetWidth < e.scrollWidth);
+}
+
+
+function handleOverFlow(index){
+
+    console.log("Handeling" + index);
+    const selectionItemTitleContainer = document.getElementById(`selectionItemElementID${index}`);
+    console.log(selectionItemTitleContainer);
+    if(isEllipsisActive(selectionItemTitleContainer))
     {
+        console.log("overflow at index");
+        var name = data[index].title;
         var tmp = name.substr(0,12) +"..."+name.substr(name.length-12,12);
-        return tmp;
+        selectionItemTitleContainer.innerText = tmp;
+         //return tmp;
     }
-    else
-        return name;
 }
 
 
 
 
-function createElementHTML(title,previewImage)
+function createElementHTML(index,title,previewImage)
 {
     return `<div class="selection-item-element">
     <img class="selection-item-element-image" src="${previewImage}" alt="" >
-</div>
-<div class="selection-item-element">
-    <p>${cropTitle(title)}</p>
-</div>`;
+    </div>
+    <div class="selection-item-element sampleDiv" id="selectionItemElementID${index}">
+        ${title}
+    </div>`;
 }
+
+
+
+// return `<div class="selection-item-element">
+// <img class="selection-item-element-image" src="${previewImage}" alt="" >
+// </div>
+// <div class="selection-item-element">
+// <p id="selectionItemElementParagraph${index}">
+//     ${title}</p>
+// </div>`;
 
 function handleViewImage(newIndex){
     element.setAttribute("src", data[newIndex].previewImage);
@@ -67,11 +89,16 @@ function addInitalElements(){
         let newItem = document.createElement("div");
     
         newItem.classList.add('selection-item');
-        newItem.innerHTML = createElementHTML(item.title,item.previewImage);
+        newItem.innerHTML = createElementHTML(index,item.title,item.previewImage);
+        console.log(newItem);
+       
         newItem.setAttribute("id",`selectedItem${index}`);
         newItem.onclick = () => toggleSelected(index);
         selectionItem.appendChild(newItem);
     });
+
+    for(var i=0;i<data.length;i++)
+        handleOverFlow(i);
 
     editNameInput.style.display="block";
     editNameInput.setAttribute("type","text");
@@ -108,10 +135,11 @@ function handleEditName(index)
 {
     //console.log("selected Index"+index);
     
-    var editedItem = document.getElementById(`selectedItem${index}`);
+    //var editedItem = document.getElementById(`selectedItem${index}`);
+    document.getElementById(`selectionItemElementID${index}`).innerText = editNameInput.value;
     data[index].title = editNameInput.value;
-    editedItem.innerHTML = createElementHTML(data[index].title,data[index].previewImage);
-
+    //editedItem.innerHTML = createElementHTML(index,data[index].title,data[index].previewImage);
+    handleOverFlow(index);
 }
 
 function onPressEnter(){
@@ -141,5 +169,7 @@ function main(){
     document.getElementById('nameField').addEventListener('input', function(event){
         handleEditName(selectedIndex);
     });
+
+    
 }
 main();
