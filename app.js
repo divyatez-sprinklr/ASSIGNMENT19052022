@@ -1,17 +1,18 @@
 import data from "./data.js";
 
-var selectedIndex;
+var selectedIndex=0;
 
 const element = document.createElement("img");
 const editNameInput = document.createElement("textarea");
 const mainContainer = document.querySelector(".selection-container"); 
 const viewContainer = document.querySelector(".view-container");
 const editContainer = document.querySelector('.edit-container');
+editNameInput.setAttribute("id","nameField");
 
 function cropTitle(name){
     if(name.length>30)
     {
-        var tmp = name.substr(0,15) +"..."+name.substr(name.length-15,15);
+        var tmp = name.substr(0,10) +"..."+name.substr(name.length-10,10);
         return tmp;
     }
     else
@@ -54,7 +55,6 @@ function toggleSelected(index){
     handleActiveItem(selectedIndex,index);
     handleViewImage(index);
     selectedIndex = index;
-    console.log("Clicked"+index);
 }
 
 
@@ -81,17 +81,18 @@ function addInitalElements(){
     
 
     editNameInput.onkeypress = (event)=> {
-        if(event.keyCode==13){handleEditName(selectedIndex);}
+        if(event.keyCode==13){onPressEnter();}
+        else{handleEditName(selectedIndex);}
     };
     viewContainer.prepend(element);
-    console.log(editContainer);
     editContainer.append(editNameInput);
     editContainer.style.borderColor ="transparent";
+    editContainer.onclick = ()=> {editNameInput.focus();
+    console.log("pressed area");};
 }
 
 document.addEventListener("keydown", function(event) {
     if(event.keyCode==38){
-        console.log("Up key");
         if(selectedIndex==0) toggleSelected(data.length-1);
         else toggleSelected(selectedIndex-1);
     }
@@ -102,18 +103,21 @@ document.addEventListener("keydown", function(event) {
 });
 
 
- function handleEditName(index)
- {
+function handleEditName(index)
+{
+    console.log("selected Index"+index);
     
     var editedItem = document.getElementById(`selectedItem${index}`);
-    
     data[index].title = editNameInput.value;
     editedItem.innerHTML = createElementHTML(data[index].title,data[index].previewImage);
 
+}
+
+function onPressEnter(){
+    handleEditName(selectedIndex);
     document.activeElement.blur();
     editContainer.style.borderColor ="transparent";
-    // editContainer.style.border = "none";
- }
+}
 
 
 function resizeInput() {
@@ -121,19 +125,20 @@ function resizeInput() {
     this.style.height = "auto";
     this.style.height = (this.scrollHeight) + "px";
 }
-  
-editNameInput.addEventListener('input', resizeInput); 
-editNameInput.addEventListener('focus', ()=>{
-    console.log("text area");
-    editContainer.style.borderColor ="#0453c8";
-   // editContainer.style.border = "inherit";
 
-
-}); 
- 
 function main(){
     selectedIndex=0;
     addInitalElements();
     toggleSelected(0);
+    editNameInput.addEventListener('input', resizeInput);
+    
+    editNameInput.addEventListener('focus', ()=>{
+    console.log("text area");
+    editContainer.style.borderColor ="#0453c8";
+    }); 
+
+    document.getElementById('nameField').addEventListener('input', function(event){
+        handleEditName(selectedIndex);
+    });
 }
 main();
