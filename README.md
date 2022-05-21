@@ -10,7 +10,7 @@
 
 ## Aditionally Interesting features I noted are:
 * Editing title was getting updated on name of file in items at sametime, so implemented that.
-* Clicking anywhere beow the image ill activate editing
-* Pressing enter will remove focus from textarea
+* Clicking anywhere beow the image will activate editing
+* Pressing enter will remove focus from textarea, ie cursor will no longer be active.
 * data.js file is kept in other folder.
-* background is linear gradient
+* background is linear gradient.
