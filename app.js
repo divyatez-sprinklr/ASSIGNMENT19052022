@@ -1,3 +1,4 @@
+
 import data from "./data.js";
 
 var selectedIndex=0;
@@ -81,11 +82,11 @@ function handleViewImage(newIndex){
  */
 function handleActiveItem(previousIndex,newIndex)
 {
-    document.getElementById(`selectedItem${previousIndex}`).style.backgroundColor = 'transparent';
-    document.getElementById(`selectedItem${previousIndex}`).style.color = 'black';
+    document.getElementById(`selectionItem${previousIndex}`).style.backgroundColor = 'transparent';
+    document.getElementById(`selectionItem${previousIndex}`).style.color = 'black';
 
-    document.getElementById(`selectedItem${newIndex}`).style.backgroundColor = '#0453c8';
-    document.getElementById(`selectedItem${newIndex}`).style.color = 'white';
+    document.getElementById(`selectionItem${newIndex}`).style.backgroundColor = '#0453c8';
+    document.getElementById(`selectionItem${newIndex}`).style.color = 'white';
     selectedItemImage.setAttribute("src", data[newIndex].previewImage);
 }
 
@@ -119,7 +120,7 @@ function createInitialElements(){
         newItem.classList.add('selection-item');
         newItem.innerHTML = createElementHTML(index,item.title,item.previewImage);
        
-        newItem.setAttribute("id",`selectedItem${index}`);
+        newItem.setAttribute("id",`selectionItem${index}`);
         newItem.onclick = () => toggleItemSelection(index);
         selectionItem.appendChild(newItem);
     });
