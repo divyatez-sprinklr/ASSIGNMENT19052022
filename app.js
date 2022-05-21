@@ -3,11 +3,11 @@ import data from "./data.js";
 var selectedIndex=0;
 
 const element = document.createElement("img");
-const editNameInput = document.createElement("textarea");
+const titleTextField = document.createElement("textarea");
 const mainContainer = document.querySelector(".selection-container"); 
 const viewContainer = document.querySelector(".view-container");
-const editContainer = document.querySelector('.edit-container');
-editNameInput.setAttribute("id","nameField");
+const selectedImageDetailsContainer = document.querySelector('.edit-container');
+titleTextField.setAttribute("id","nameField");
 
 
 
@@ -15,10 +15,14 @@ function isEllipsisActive(e) {
     return (e.offsetWidth < e.scrollWidth);
 }
 
-
+/**
+ * Handle overflow using custom function
+ * @param {var} index 
+ */
 function handleOverFlow(index){
 
     const selectionItemTitleContainer = document.getElementById(`selectionItemElementID${index}`);
+
     if(isEllipsisActive(selectionItemTitleContainer))
     {
         var name = data[index].title;
@@ -41,25 +45,41 @@ function handleOverFlow(index){
 
 
 
-
+/**
+ * Create Items for selection
+ * 
+ * @param {var} index 
+ * @param {var} title 
+ * @param {var} previewImage 
+ * @returns 
+ */
 function createElementHTML(index,title,previewImage)
 {
     return `<div class="selection-item-element">
-    <img class="selection-item-element-image" src="${previewImage}" alt="" >
-    </div>
-    <div class="selection-item-element sampleDiv" id="selectionItemElementID${index}">
-        ${title}
-    </div>`;
+                <img class="selection-item-element-image" src="${previewImage}" alt="" >
+            </div>
+            <div class="selection-item-element sampleDiv" id="selectionItemElementID${index}">
+                ${title}
+            </div>`;
 }
 
-
+/**
+ * Update selected index image 
+ * @param {var} newIndex 
+ */
 function handleViewImage(newIndex){
     element.setAttribute("src", data[newIndex].previewImage);
-    editNameInput.value = data[newIndex].title;
-    editNameInput.style.width = `${data[newIndex].title.length}ch`;
+    titleTextField.value = data[newIndex].title;
+    titleTextField.style.width = `${data[newIndex].title.length}ch`;
     
 }
 
+/**
+ * Unselect previous index
+ * Select new index
+ * @param {var} previousIndex 
+ * @param {var} newIndex 
+ */
 function handleActiveItem(previousIndex,newIndex)
 {
     document.getElementById(`selectedItem${previousIndex}`).style.backgroundColor = 'transparent';
@@ -70,19 +90,29 @@ function handleActiveItem(previousIndex,newIndex)
     element.setAttribute("src", data[newIndex].previewImage);
 }
 
-
-function toggleSelected(index){
+/**
+ * 
+ * @param {var} index 
+ */
+function toggleItemSelection(index){
 
     handleActiveItem(selectedIndex,index);
     handleViewImage(index);
     selectedIndex = index;
 }
 
+/**
+ * This is Initial Elements
+ * create items
+ * Handle overflow
+ * 
+ */
+function createInitialElements(){
 
-function addInitalElements(){
     const selectionItem = document.getElementById("selection-container");
     selectionItem.innerHTML = "";
     
+    //Create Elements
     data.map((item, index) => {
         
         let newItem = document.createElement("div");
@@ -91,78 +121,101 @@ function addInitalElements(){
         newItem.innerHTML = createElementHTML(index,item.title,item.previewImage);
        
         newItem.setAttribute("id",`selectedItem${index}`);
-        newItem.onclick = () => toggleSelected(index);
+        newItem.onclick = () => toggleItemSelection(index);
         selectionItem.appendChild(newItem);
     });
 
+    //Handle Overflow for each element
     for(var i=0;i<data.length;i++)
         handleOverFlow(i);
 
-    editNameInput.style.display="block";
-    editNameInput.setAttribute("type","text");
-    editNameInput.oninput=(event) =>{'this.style.height = "";this.style.height = this.scrollHeight + "px"'};
-    editNameInput.style.overflow = `hidden`;
-    editNameInput.style.resize = `none`;
-    
-    editNameInput.onkeypress = (event)=> {
+    //Enable Attributes for titleTextfield
+    titleTextField.style.display="block";
+    titleTextField.setAttribute("type","text");
+    titleTextField.oninput=(event) =>{'this.style.height = "";this.style.height = this.scrollHeight + "px"'};
+    titleTextField.style.overflow = `hidden`;
+    titleTextField.style.resize = `none`;
+
+    //Handle keypress for titleTestfield
+    titleTextField.onkeypress = (event)=> {
         if(event.keyCode==13){onPressEnter();}
-        else{handleEditName(selectedIndex);}
+        else{handleEditedTitle(selectedIndex);}
     };
     
+    //Append Image Container
     viewContainer.prepend(element);
     
-    editContainer.append(editNameInput);
-    editContainer.style.borderColor ="transparent";
-    editContainer.onclick = ()=> {editNameInput.focus();
+    //Append Title
+    selectedImageDetailsContainer.append(titleTextField);
+    selectedImageDetailsContainer.style.borderColor ="transparent";
+    selectedImageDetailsContainer.onclick = ()=> {titleTextField.focus();
 
 };
 }
 
+
+/**
+ * This is to handle keyup and dekdown
+ */
 document.addEventListener("keydown", function(event) {
     if(event.keyCode==38){
-        if(selectedIndex==0) toggleSelected(data.length-1);
-        else toggleSelected(selectedIndex-1);
+        if(selectedIndex==0) toggleItemSelection(data.length-1);
+        else toggleItemSelection(selectedIndex-1);
     }
     else if(event.keyCode==40){
-        if(selectedIndex==data.length-1) toggleSelected(0);
-        else toggleSelected(selectedIndex+1);
+        if(selectedIndex==data.length-1) toggleItemSelection(0);
+        else toggleItemSelection(selectedIndex+1);
     }   
 });
 
 
-function handleEditName(index)
+function handleEditedTitle(index)
 {
-   
-    document.getElementById(`selectionItemElementID${index}`).innerText = editNameInput.value;
-    data[index].title = editNameInput.value;
+    /** 
+     * Update changed title to data.
+     * Check overflow condition and update accordingly.
+    */
+    document.getElementById(`selectionItemElementID${index}`).innerText = titleTextField.value;
+    data[index].title = titleTextField.value;
     handleOverFlow(index);
 }
 
 function onPressEnter(){
-    handleEditName(selectedIndex);
+    /*
+        Input , on pressing enter
+        1) Handle Edited tile. Not necessary , just for exceptions
+        2) Remove focus from textarea
+        3) Remove border from container
+    */
+    handleEditedTitle(selectedIndex);
     document.activeElement.blur();
-    editContainer.style.borderColor ="transparent";
+    selectedImageDetailsContainer.style.borderColor ="transparent";
 }
 
 
-function resizeInput() {
+function handleResizeInput() {
+    /*
+        While typing, the input width and height gets changed.
+    */ 
     this.style.width = this.value.length + "ch";
     this.style.height = "auto";
     this.style.height = (this.scrollHeight) + "px";
 }
 
 function main(){
+
     selectedIndex=0;
-    addInitalElements();
-    toggleSelected(0);
-    editNameInput.addEventListener('input', resizeInput);
-    
-    editNameInput.addEventListener('focus', ()=>{
-    editContainer.style.borderColor ="#0453c8";
+    createInitialElements();
+    toggleItemSelection(0);
+
+
+    titleTextField.addEventListener('input', handleResizeInput);
+    titleTextField.addEventListener('focus', ()=>{
+        selectedImageDetailsContainer.style.borderColor ="#0453c8";
     }); 
 
     document.getElementById('nameField').addEventListener('input', function(event){
-        handleEditName(selectedIndex);
+        handleEditedTitle(selectedIndex);
     });
 
     
