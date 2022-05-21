@@ -4,9 +4,11 @@ var selectedIndex,selectedItem,selectedItemLink;
 
 const element = document.createElement("img");
 const editNameInput = document.createElement("input");
-const mainContainer = document.querySelector(".selection-container"); 
 const viewImageName = document.createElement("p"); 
+const mainContainer = document.querySelector(".selection-container"); 
 
+const editContainer = document.getElementById('edit-container');
+var toggle;
 
 function cropTitle(name){
     if(name.length>30)
@@ -102,12 +104,10 @@ document.addEventListener("keydown", function(event) {
 
  function handleEditName()
  {
-    viewImageName.style.display="block";
-    editNameInput.style.display="none";
+    
     var editedItem = document.getElementById(`selectedItem${selectedIndex}`);
     console.log(editedItem);
     
-    //createElementHTML(editNameInput.value ,data[selectedIndex]);
     data[selectedIndex].title = editNameInput.value;
     viewImageName.innerText = data[selectedIndex].title;
     editedItem.innerHTML = `<div class="selection-item-element">
@@ -116,38 +116,49 @@ document.addEventListener("keydown", function(event) {
 <div class="selection-item-element">
     <p>${cropTitle(data[selectedIndex].title)}</p>
 </div>`;
+    editContainer.removeChild(editContainer.children[1]);
+    editContainer.prepend(viewImageName);
+    //editContainer.innerHTML = viewImageName;
     //console.log("Edit closed"); 
+    toggle = false;
  }
 
 function handleViewName(){
-    viewImageName.style.display="none";
-    editNameInput.style.display="block";
+    editContainer.removeChild(editContainer.children[1]);
+    editContainer.prepend(editNameInput);
+    console.log(editNameInput);
     editNameInput.value = data[selectedIndex].title;
+    toggle = true;
 }
 
 function main(){
     addInitalElements();
+
     selectedIndex=0;
+    toggle = false;
     document.getElementById(`selectedItem${selectedIndex}`).style.backgroundColor = '#0453c8';
     const viewContainer = document.querySelector(".view-container");
     element.setAttribute("src", data[0].previewImage);
-    viewImageName.innerText = data[0].title;
-    editNameInput.value = data[0].title;
+    viewImageName.style.display="block";
+    editNameInput.style.display="block";
+    console.log(editContainer);
+    
+    editContainer.innerHTML = `<p>${data[0].title}</p>`;
+    
+    //viewImageName.innerText = data[0].title;
+    //editNameInput.value = data[0].title;
 
-    viewImageName.onclick = ()=> handleViewName();
+    editContainer.onclick = ()=> handleViewName();
 
-    editNameInput.onkeypress = (event)=> {
-        if(event.keyCode==13){handleEditName();}
+    editContainer.onkeypress = (event)=> {
+        if(event.keyCode==13&&toggle){handleEditName();}
     };
     
-    editNameInput.style.display="none";
+   // editNameInput.style.display="none";
     
-    viewContainer.append(element);
-    viewContainer.append(viewImageName);
-    viewContainer.append(editNameInput);
-
-
-    
+    viewContainer.prepend(element);
+    // viewContainer.append(viewImageName);
+    // viewContainer.append(editNameInput);
 
 }
 main();
