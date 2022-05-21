@@ -1,5 +1,7 @@
 body {
     background-image: linear-gradient(90deg, #b6b6b6 0%, #ffffff 35%, #ebebeb 100%);
+    font-family: Arial, Helvetica, sans-serif;
+
 }
 
 .main-container{
@@ -23,6 +25,16 @@ body {
     flex-direction: column;
 }
 
+.edit-container{
+    width: 100%;
+    margin-top: 2%;
+    padding: 5px 0px 5px 0px;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    border-style: solid;
+}
+
 .view-container img{
     width: 600px;
     height: 800px;
@@ -39,6 +51,7 @@ body {
     display: flex;
     flex-direction: row;
     gap: 10px;
+    font-weight: normal;
    
     
 }
@@ -63,10 +76,19 @@ body {
 textarea
 {
     background: transparent;
-    border: none;
     column-span: auto;
+    border: none;
     height: fit-content;
     font-size:1.3em; 
-    padding:.5em; 
+    padding: 0em; 
     max-width: 90%;
+    overflow:hidden;
+
+}
+
+textarea:focus { 
+    outline: none !important;
+    
+    /* border-color: #719ECE; 
+    box-shadow: 0 0 10px #719ECE; */
 }

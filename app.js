@@ -6,7 +6,7 @@ const element = document.createElement("img");
 const editNameInput = document.createElement("textarea");
 const mainContainer = document.querySelector(".selection-container"); 
 const viewContainer = document.querySelector(".view-container");
-const editContainer = document.getElementById('edit-container');
+const editContainer = document.querySelector('.edit-container');
 
 function cropTitle(name){
     if(name.length>30)
@@ -42,6 +42,7 @@ function handleActiveItem(previousIndex,newIndex)
 {
     document.getElementById(`selectedItem${previousIndex}`).style.backgroundColor = 'transparent';
     document.getElementById(`selectedItem${previousIndex}`).style.color = 'black';
+
     document.getElementById(`selectedItem${newIndex}`).style.backgroundColor = '#0453c8';
     document.getElementById(`selectedItem${newIndex}`).style.color = 'white';
     element.setAttribute("src", data[newIndex].previewImage);
@@ -83,7 +84,9 @@ function addInitalElements(){
         if(event.keyCode==13){handleEditName(selectedIndex);}
     };
     viewContainer.prepend(element);
-    viewContainer.append(editNameInput);
+    console.log(editContainer);
+    editContainer.append(editNameInput);
+    editContainer.style.borderColor ="transparent";
 }
 
 document.addEventListener("keydown", function(event) {
@@ -108,6 +111,8 @@ document.addEventListener("keydown", function(event) {
     editedItem.innerHTML = createElementHTML(data[index].title,data[index].previewImage);
 
     document.activeElement.blur();
+    editContainer.style.borderColor ="transparent";
+    // editContainer.style.border = "none";
  }
 
 
@@ -118,6 +123,13 @@ function resizeInput() {
 }
   
 editNameInput.addEventListener('input', resizeInput); 
+editNameInput.addEventListener('focus', ()=>{
+    console.log("text area");
+    editContainer.style.borderColor ="#0453c8";
+   // editContainer.style.border = "inherit";
+
+
+}); 
  
 function main(){
     selectedIndex=0;
