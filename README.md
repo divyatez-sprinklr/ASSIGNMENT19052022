@@ -4,7 +4,7 @@
 * Maching Designs
 * Clicks work on items
 * Arrow up and down for navigation
-* Dimension of label using custom funstion
+* Dimension of label using custom function
 * Editable title
 * Center layout
 
