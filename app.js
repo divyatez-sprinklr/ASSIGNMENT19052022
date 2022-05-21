@@ -12,7 +12,7 @@ editNameInput.setAttribute("id","nameField");
 function cropTitle(name){
     if(name.length>30)
     {
-        var tmp = name.substr(0,10) +"..."+name.substr(name.length-10,10);
+        var tmp = name.substr(0,12) +"..."+name.substr(name.length-12,12);
         return tmp;
     }
     else
@@ -88,7 +88,8 @@ function addInitalElements(){
     editContainer.append(editNameInput);
     editContainer.style.borderColor ="transparent";
     editContainer.onclick = ()=> {editNameInput.focus();
-    console.log("pressed area");};
+    //console.log("pressed area");
+};
 }
 
 document.addEventListener("keydown", function(event) {
@@ -105,7 +106,7 @@ document.addEventListener("keydown", function(event) {
 
 function handleEditName(index)
 {
-    console.log("selected Index"+index);
+    //console.log("selected Index"+index);
     
     var editedItem = document.getElementById(`selectedItem${index}`);
     data[index].title = editNameInput.value;
@@ -133,7 +134,7 @@ function main(){
     editNameInput.addEventListener('input', resizeInput);
     
     editNameInput.addEventListener('focus', ()=>{
-    console.log("text area");
+    //console.log("text area");
     editContainer.style.borderColor ="#0453c8";
     }); 
 
