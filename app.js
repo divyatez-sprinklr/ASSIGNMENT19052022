@@ -18,16 +18,24 @@ function isEllipsisActive(e) {
 
 function handleOverFlow(index){
 
-    console.log("Handeling" + index);
     const selectionItemTitleContainer = document.getElementById(`selectionItemElementID${index}`);
-    console.log(selectionItemTitleContainer);
     if(isEllipsisActive(selectionItemTitleContainer))
     {
-        console.log("overflow at index");
         var name = data[index].title;
-        var tmp = name.substr(0,12) +"..."+name.substr(name.length-12,12);
-        selectionItemTitleContainer.innerText = tmp;
-         //return tmp;
+        var front="",back="";
+        var len = name.length;
+        for(var i=0;i<len/2;i++)
+        {
+            front = front + name[i];
+            back = name[len-i-1] + back;
+            selectionItemTitleContainer.innerText = front + "1111111" +back;
+            if(isEllipsisActive(selectionItemTitleContainer)){
+                selectionItemTitleContainer.innerText = front + "..." +back;
+                break;
+            }
+
+                
+        }
     }
 }
 
@@ -44,15 +52,6 @@ function createElementHTML(index,title,previewImage)
     </div>`;
 }
 
-
-
-// return `<div class="selection-item-element">
-// <img class="selection-item-element-image" src="${previewImage}" alt="" >
-// </div>
-// <div class="selection-item-element">
-// <p id="selectionItemElementParagraph${index}">
-//     ${title}</p>
-// </div>`;
 
 function handleViewImage(newIndex){
     element.setAttribute("src", data[newIndex].previewImage);
@@ -90,7 +89,6 @@ function addInitalElements(){
     
         newItem.classList.add('selection-item');
         newItem.innerHTML = createElementHTML(index,item.title,item.previewImage);
-        console.log(newItem);
        
         newItem.setAttribute("id",`selectedItem${index}`);
         newItem.onclick = () => toggleSelected(index);
@@ -106,16 +104,17 @@ function addInitalElements(){
     editNameInput.style.overflow = `hidden`;
     editNameInput.style.resize = `none`;
     
-
     editNameInput.onkeypress = (event)=> {
         if(event.keyCode==13){onPressEnter();}
         else{handleEditName(selectedIndex);}
     };
+    
     viewContainer.prepend(element);
+    
     editContainer.append(editNameInput);
     editContainer.style.borderColor ="transparent";
     editContainer.onclick = ()=> {editNameInput.focus();
-    //console.log("pressed area");
+
 };
 }
 
@@ -133,12 +132,9 @@ document.addEventListener("keydown", function(event) {
 
 function handleEditName(index)
 {
-    //console.log("selected Index"+index);
-    
-    //var editedItem = document.getElementById(`selectedItem${index}`);
+   
     document.getElementById(`selectionItemElementID${index}`).innerText = editNameInput.value;
     data[index].title = editNameInput.value;
-    //editedItem.innerHTML = createElementHTML(index,data[index].title,data[index].previewImage);
     handleOverFlow(index);
 }
 
@@ -162,7 +158,6 @@ function main(){
     editNameInput.addEventListener('input', resizeInput);
     
     editNameInput.addEventListener('focus', ()=>{
-    //console.log("text area");
     editContainer.style.borderColor ="#0453c8";
     }); 
 
@@ -172,4 +167,5 @@ function main(){
 
     
 }
+
 main();
