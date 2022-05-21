@@ -2,9 +2,8 @@ import data from "./data.js";
 
 var selectedIndex=0;
 
-const element = document.createElement("img");
+const selectedItemImage = document.createElement("img");
 const titleTextField = document.createElement("textarea");
-const mainContainer = document.querySelector(".selection-container"); 
 const viewContainer = document.querySelector(".view-container");
 const selectedImageDetailsContainer = document.querySelector('.edit-container');
 titleTextField.setAttribute("id","nameField");
@@ -68,7 +67,7 @@ function createElementHTML(index,title,previewImage)
  * @param {var} newIndex 
  */
 function handleViewImage(newIndex){
-    element.setAttribute("src", data[newIndex].previewImage);
+    selectedItemImage.setAttribute("src", data[newIndex].previewImage);
     titleTextField.value = data[newIndex].title;
     titleTextField.style.width = `${data[newIndex].title.length}ch`;
     
@@ -87,7 +86,7 @@ function handleActiveItem(previousIndex,newIndex)
 
     document.getElementById(`selectedItem${newIndex}`).style.backgroundColor = '#0453c8';
     document.getElementById(`selectedItem${newIndex}`).style.color = 'white';
-    element.setAttribute("src", data[newIndex].previewImage);
+    selectedItemImage.setAttribute("src", data[newIndex].previewImage);
 }
 
 /**
@@ -143,7 +142,7 @@ function createInitialElements(){
     };
     
     //Append Image Container
-    viewContainer.prepend(element);
+    viewContainer.prepend(selectedItemImage);
     
     //Append Title
     selectedImageDetailsContainer.append(titleTextField);
