@@ -38,7 +38,7 @@ body {
 
 .view-container img{
     width: 540px;
-    height: 750px;
+    height: 80vh;
     object-fit: cover;
     border-radius: 1%
 }
