@@ -17,6 +17,7 @@ body {
     min-height: 200px;
     display: inline;
     padding: .5%;
+    
 }
 
 .view-container {
@@ -37,8 +38,7 @@ body {
 }
 
 .view-container img{
-    width: 540px;
-    height: 80vh;
+    width: 100%;
     object-fit: cover;
     border-radius: 1%
 }
